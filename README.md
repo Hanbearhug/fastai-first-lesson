@@ -82,4 +82,33 @@ lr = np.array([1e-4, 1e-3, 1e-2])
 learn.fit(lr, 3, cycle_len=1, cycle_mult=2)
 ```
 这里的cycle_mult参数代表着每一次cycle结束后新的cycle变为原先的cycle的几倍，这是为了防止cycle太小而产生的欠拟合现象。
-![]()
+![](https://github.com/Hanbearhug/fastai-first-lesson/blob/master/cycle_mult.png)
+
+由于在预测时我们可能由于角度或者剪切的原因没办法做出准确的预测，因此会采用TTA方法来进行效果的进一步提升，在预测时对测试集上的每一张图片进行增强操作，然后取预测的均值作为结果
+```
+log_preds,y = learn.TTA()
+probs = np.mean(np.exp(log_preds),0)
+```
+### 训练出一个世界级的图像分类器所需要的操作
+1.precompute=True\
+2.Use lr_find() to find highest learning rate where loss is still clearly improving
+3.Train last layer from perocomputed activations for 1-2 epochs
+4.Train last layer with data augmentation(i.e. precompute=False) for 2-3 epochs with cycle_len=1
+5.Unfreeze all layers
+6.Set earlier layers to 3x-10x lower learning rate than next higher layer
+7.Use lr_find() again
+8.Train full network with cycle_mult=2 until over-fitting
+
+### 对代码的理解
+```
+tfms = tfms_from_model(resnet34, sz)
+```
+tfms_from_model 用于调整图片尺寸、图像裁剪、初始的标准化等等操作
+```
+data = ImageClassifierData.from_paths([PATH, tfms=tfms)
+```
+ImageClassifierData.from_paths从指定路径读取图片数据并且创建一个用于训练的数据
+```
+learn = ConvLearner.pretrained(resnet34, data, precompute=True)
+```
+ConvLearner.pretrained建立了一个从ImageNet中预训练好的网络，但在使用的过程中我们需要替换掉最后一层网络以满足我们数据的维度。
