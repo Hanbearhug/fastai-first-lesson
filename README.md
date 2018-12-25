@@ -50,4 +50,11 @@ learn = ConvLearner.pretrained(arch, data, precompute=True)
 lrf = learn.lr_find()
 ```
 learn.lr_find()用于帮助寻找最优的学习率，其思想来源于2015年的论文"Cyclical Learning Rates for Training Neural Networks"，做法是先从很小的学习率开始，然后逐步提高学习率(一般是两倍)直到损失函数停止下降为止。
+```
+learn.sched.plot_lr()
+```
 ![](https://github.com/Hanbearhug/fastai-first-lesson/blob/master/%E8%BF%AD%E4%BB%A3%E5%AD%A6%E4%B9%A0%E7%8E%87%E5%9B%BE%E5%83%8F.png)
+```
+learn.sched.plot()
+```
+![]()
