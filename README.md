@@ -65,6 +65,6 @@ learn.sched.plot()
 ```
 tfms = tfms_from_model(resnet34, sz, aug_tfms=transforms_side_on, max_zoom=1.1)
 ```
-这里使用transforms_side_on进行水平翻转操作，而使用max_zoom来进行局部放大操作
-
+这里使用transforms_side_on进行水平翻转操作，而使用max_zoom来进行局部放大操作，效果如下所示
+![](https://github.com/Hanbearhug/fastai-first-lesson/blob/master/%E6%B0%B4%E5%B9%B3%E7%BF%BB%E8%BD%AC.png)
 
