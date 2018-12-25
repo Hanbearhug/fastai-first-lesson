@@ -32,3 +32,21 @@ img = plt.imread(f'{PATH}valid/cats/files[0]')
 plt.imshow(img)
 ```
 plt.imread用于读取一个image文件，f-string语法用于字符串的格式化(优于%-string)
+
+### 三行代码开始模型
+```
+arch = resnet34
+data = ImageClassifierData.from_paths(PATH, tfms=tfms_from_model(arch, sz))
+learn = ConvLearner.pretrained(arch, data, precompute=True)
+learn.fit(0.01,2)
+```
+这里ImageClassifierData.from_paths用于第一种标准数据集的训练及预测，tfms_from_model用于对模型进行类似于数据增强的操作。
+
+
+### 选择学习率
+学习率是最难设定的参数之一，它显著的影响了模型的表现
+```
+learn = ConvLearner.pretrained(arch, data, precompute=True)
+lrf = learn.lr_find()
+```
+learn.lr_find()用于帮助寻找最优的学习率，其思想来源于2015年的论文"Cyclical Learning Rates for Training Neural Networks"，做法是先从很小的学习率开始，然后逐步提高学习率(一般是两倍)直到损失函数停止下降为止。
