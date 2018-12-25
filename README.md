@@ -82,3 +82,4 @@ lr = np.array([1e-4, 1e-3, 1e-2])
 learn.fit(lr, 3, cycle_len=1, cycle_mult=2)
 ```
 这里的cycle_mult参数代表着每一次cycle结束后新的cycle变为原先的cycle的几倍，这是为了防止cycle太小而产生的欠拟合现象。
+![]()
