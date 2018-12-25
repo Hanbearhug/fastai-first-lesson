@@ -72,3 +72,13 @@ tfms = tfms_from_model(resnet34, sz, aug_tfms=transforms_side_on, max_zoom=1.1)
 learn.fit(1e-2, 3, cycle_len=1)
 ```
 这里的cycle_len代表着学习率重启的周期，即每cycle_len个epoch周期进行一次学习率的重启(SGD with restarts)
+![](https://github.com/Hanbearhug/fastai-first-lesson/blob/master/SGD_with_starts.png)
+
+### Fine-tuning and differential learning rate annealing
+在调完最后一层后我们开始调节其他预训练过的层，由于初始的层已经能够很好的学习一些初等的特征了，我们不希望去破坏这些已经训练好的权重，因此我们采用差异化的学习率的方式来进行训练，这里要注意的是，如果说图像与ImageNet的图像数据集比较类似，那么我们给前面的层设定的学习率就要小些，因为我们更希望它们的参数不要波动太大，但是如果图像与ImageNet的图像相差较远(例如卫星图像)，我们一般就要采取更大的学习率。
+```
+learn.unfreeze()
+lr = np.array([1e-4, 1e-3, 1e-2])
+learn.fit(lr, 3, cycle_len=1, cycle_mult=2)
+```
+这里的cycle_mult参数代表着每一次cycle结束后新的cycle变为原先的cycle的几倍，这是为了防止cycle太小而产生的欠拟合现象。
