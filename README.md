@@ -57,4 +57,5 @@ learn.sched.plot_lr()
 ```
 learn.sched.plot()
 ```
-![]()
+![](https://github.com/Hanbearhug/fastai-first-lesson/blob/master/%E5%AD%A6%E4%B9%A0%E7%8E%87%E6%8D%9F%E5%A4%B1%E5%9B%BE%E5%83%8F.png)
+
